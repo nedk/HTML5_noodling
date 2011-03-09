@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>HTML5 Local Storage</title>
+        <script>
+            function supports_html5_storage() {
+                try {
+                    return 'localStorage' in window && window['localStorage'] !== null;
+                } catch (e) {
+                    return false;
+                }
+            }
+            
+            function loadPreviousEntries() {
+                if ( supports_html5_storage() ) {
+                    var previous = document.getElementById('previous'),
+                        lastEntry = localStorage.key( localStorage.length - 1 );
+                    
+                    previous.innerHTML = localStorage.getItem( lastEntry );
+                }
+            }
+            
+            function saveHandler() {
+                var textarea = document.getElementById('new');
+                localStorage.setItem('previousEntry1', textarea.value);
+                
+                return false;
+            }
+            
+            function init() {
+                loadPreviousEntries();
+                
+                var saveLink = document.getElementById('save');
+                saveLink.addEventListener('click', saveHandler, false);
+            }
+        </script>
+        <style>
+            body {
+                font-family: monospace;
+            }
+            
+            .preformatted {
+                white-space: pre;
+                
+                border: 1px solid #000;
+                display: block;
+                width: 100%;
+                height: 100px;
+                
+                margin-top: 20px;
+            }
+        </style>
+    </head>
+    <body onload="init()">
+        <textarea id="new" class="preformatted new-entry"></textarea>
+        <a id="save" href="#">Save</a>
+        <div id="previous" class="preformatted previous-entry">This is a previous entry.</div>
+    </body>
+</html>
